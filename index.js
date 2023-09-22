@@ -79,6 +79,13 @@ recognition.onresult = function (event) {
 
   recognizedSpeech = recognizedSpeech.trim().toLowerCase();
 
+   // Remove any existing smiley images
+   const emotionsContainer = document.querySelector("#emotions");
+   while (emotionsContainer.firstChild) {
+     emotionsContainer.removeChild(emotionsContainer.firstChild);
+   }
+ 
+
   // Check for specific emotions and display corresponding smiley images
   for (const emotion in emotionToSmiley) {
     if (recognizedSpeech.includes(emotion)) {
