@@ -16,6 +16,13 @@ const SpeechRecognitionEvent =
 
 // grammer -> these are all commands you can say, feel free to change
 const commands = ["start", "stop"];
+const emotionToSmiley = {
+  blij: "blij.jpg",
+  verdrietig: "verdrietig.jpg",
+  boos: "boos.jpg",
+  // Add more emotions and corresponding image URLs as needed
+};
+
 const grammar = `#JSGF V1.0; grammar commands; public <command> = ${commands.join(
   " | "
 )};`;
@@ -65,3 +72,26 @@ const makeImage = async (prompt) => {
 makeImage(
   "foto van een laptop geschilderd door Vincent Van Gogh, laptop in de voorgrond, met een hond erop, in een bos, met een zonsondergang"
 );
+
+recognition.onresult = function (event) {
+  let recognizedSpeech = event.results[event.results.length - 1][0].transcript;
+  if (recognizedSpeech === "") return;
+
+  recognizedSpeech = recognizedSpeech.trim().toLowerCase();
+
+  // Check for specific emotions and display corresponding smiley images
+  for (const emotion in emotionToSmiley) {
+    if (recognizedSpeech.includes(emotion)) {
+      // Display the corresponding smiley image on the screen
+      displaySmiley(emotionToSmiley[emotion]);
+    }
+  }
+
+  document.querySelector("#commando").innerHTML = recognizedSpeech;
+};
+function displaySmiley(smileyImageUrl) {
+  const smileyImageElement = document.createElement("img");
+  smileyImageElement.src = smileyImageUrl;
+  // Add the image element to the DOM where you want to display it
+  document.querySelector("#emotions").appendChild(smileyImageElement);
+}
