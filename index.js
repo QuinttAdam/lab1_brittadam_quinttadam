@@ -55,24 +55,6 @@ recognition.onresult = function (event) {
   document.querySelector("#commando").innerHTML = recognizedSpeech;
 };
 
-// the function that makes images
-const makeImage = async (prompt) => {
-  // showLoading();
-  let result = await inference.textToImage({
-    inputs: `${prompt}`,
-    model: "stabilityai/stable-diffusion-2",
-    parameters: {
-      negative_prompt: "blurry"
-    }
-  });
-  document.querySelector("#hf").src = URL.createObjectURL(result);
-  // hideLoading();
-};
-
-makeImage(
-  "foto van een laptop geschilderd door Vincent Van Gogh, laptop in de voorgrond, met een hond erop, in een bos, met een zonsondergang"
-);
-
 recognition.onresult = function (event) {
   let recognizedSpeech = event.results[event.results.length - 1][0].transcript;
   if (recognizedSpeech === "") return;
